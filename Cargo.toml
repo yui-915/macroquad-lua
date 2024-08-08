@@ -1,0 +1,36 @@
+[package]
+name = "macroquad-lua"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies.notify]
+version = "6.1.1"
+
+[dependencies.macroquad-lua-macros]
+path = "deps/macroquad-lua-macros"
+
+[dependencies.macroquad]
+version = "0.4.11"
+default-features = false
+
+[dependencies.mlua]
+version = "0.9.9"
+features = ["luajit", "vendored", "macros", "async"]
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+lto = true
+codegen-units = 1
+# strip = "debuginfo"
+strip = "symbols"
+
+[dev-dependencies]
+notify = "6.1.1"
+# panic = "abort"
+# opt-level = "s"
+# opt-level = "z"
