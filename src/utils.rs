@@ -68,6 +68,13 @@ macro_rules! make_lua_fns_table {
 }
 
 #[macro_export]
+macro_rules! make_lua_fns_table_smol {
+    ($lua:expr, $($name:ident $($arg:ident) *),*) => {
+        make_lua_fns_table!($lua, [$((stringify!($name), $name, $($arg) *)),*])
+    }
+}
+
+#[macro_export]
 macro_rules! make_lua_table {
     ($lua:expr, [$(($name:expr, $value:expr)),*]) => {
         {
@@ -96,6 +103,7 @@ macro_rules! make_lua_constants_table {
 #[macro_export]
 macro_rules! wrap_type {
     ($type:ty, $alias:ident) => {
+        #[derive(Default)]
         struct $alias($type);
         impl From<$type> for $alias {
             fn from(a: $type) -> Self {
@@ -118,6 +126,7 @@ macro_rules! wrap_type {
 #[macro_export]
 macro_rules! wrap_fn_lua {
     ($original:expr, $name:ident, $return:ty, $($arg:ident $type:ty),*) => {
+        #[allow(clippy::too_many_arguments)]
         fn $name ($($arg: $type),*) -> LuaResult< $return > {
             Ok( $original ( $($arg.into()),* ) )
         }
@@ -134,6 +143,32 @@ macro_rules! impl_userdata_feilds {
             )*
         }
     }
+}
+
+#[macro_export]
+macro_rules! impl_userdata_feilds_complex {
+    ($($field:ident $type:ident),*) => {
+        fn add_fields<'lua, F: LuaUserDataFields<'lua, Self>>(fields: &mut F) {
+            $(
+                fields.add_field_method_get(stringify!($field), |_, s| Ok($type ::from(s.0.$field)));
+                fields.add_field_method_set(stringify!($field), |_, s, v: $type| Ok(s.0.$field = v.into()));
+            )*
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! impl_new {
+    ($struct:ty, $trait:ident, $($field:ident $type:ty),*) => {
+        trait $trait {
+            fn new($($field: $type),*) -> Self;
+        }
+        impl $trait for $struct {
+            fn new($($field: $type),*) -> Self {
+                Self { $($field: $field.into()),* }
+            }
+        }
+    };
 }
 
 #[macro_export]

@@ -7,7 +7,7 @@ end
 
 function game.update()
 	X = X + 0.5
-	mq.draw_rectangle(X, 0, 100, 100, mq.RED)
+	mq.draw_rectangle_lines(X, 0, 100, 100, 50, mq.RED)
 end
 
 return game
