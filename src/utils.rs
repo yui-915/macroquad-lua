@@ -101,6 +101,19 @@ macro_rules! make_lua_constants_table {
 }
 
 #[macro_export]
+macro_rules! make_lua_enum_table {
+    ($lua:expr,$($variant:ident) *) => {
+        {
+            let table = $lua.create_table()?;
+            $(
+                table.set(stringify!($variant), stringify!($variant))?;
+            )*
+            table
+        }
+    };
+}
+
+#[macro_export]
 macro_rules! wrap_type {
     ($type:ty, $alias:ident) => {
         #[derive(Default)]
@@ -121,6 +134,69 @@ macro_rules! wrap_type {
             }
         }
     };
+    ($type:ty, $alias:ident, no_default) => {
+        struct $alias($type);
+        impl From<$type> for $alias {
+            fn from(a: $type) -> Self {
+                Self(a)
+            }
+        }
+        impl From<$alias> for $type {
+            fn from(a: $alias) -> Self {
+                a.0
+            }
+        }
+        impl $alias {
+            pub const fn new(a: $type) -> Self {
+                Self(a)
+            }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! wrap_enum {
+    ($type:ident, $alias:ident, $($variant:ident) *) => {
+        enum $alias {
+            $($variant),*
+        }
+        impl From<$type> for $alias {
+            fn from(a: $type) -> Self {
+                match a {
+                    $($type::$variant => $alias::$variant,)*
+                }
+            }
+        }
+        impl From<$alias> for $type {
+            fn from(a: $alias) -> Self {
+                match a {
+                    $($alias::$variant => $type::$variant,)*
+                }
+            }
+        }
+        impl FromLua<'_> for $alias {
+            fn from_lua(lua_value: LuaValue<'_>, _lua: &Lua) -> LuaResult<Self> {
+                match lua_value {
+                    LuaValue::String(s) => Ok(match s.to_str()? {
+                        $(stringify!($variant) => $alias::$variant,)*
+                        _ => return Err(LuaError::external("Expected $alias, got idk")),
+                    }),
+                    _ => Err(LuaError::external(format!(
+                        "Expected $alias, got {:?}",
+                        lua_value
+                    ))),
+                }
+            }
+        }
+        impl IntoLua<'_> for $alias {
+            fn into_lua(self, lua: &Lua) -> LuaResult<LuaValue> {
+                match self {
+                    $($alias::$variant => lua.create_string(stringify!($variant))?,)*
+                }
+                .into_lua(lua)
+            }
+        }
+    }
 }
 
 #[macro_export]
@@ -128,7 +204,7 @@ macro_rules! wrap_fn_lua {
     ($original:expr, $name:ident, $return:ty, $($arg:ident $type:ty),*) => {
         #[allow(clippy::too_many_arguments)]
         fn $name ($($arg: $type),*) -> LuaResult< $return > {
-            Ok( $original ( $($arg.into()),* ) )
+            Ok( $original ( $($arg.into()),* ).into() )
         }
     };
 }
@@ -195,21 +271,6 @@ macro_rules! lua_wrap_constructor_fns {
     ($methods:ident, $original:ident, $struct:ident, [$($name:ident $($arg:ident) *),*]) => {
         $(
             lua_wrap_constructor_fn!($methods, $original, $struct, $name, $($arg) *);
-        )*
-    };
-    ($methods:ident, $original1:ident::$original2:ident, $struct:ident, [$($name:ident $($arg:ident) *),*]) => {
-        $(
-            lua_wrap_constructor_fn!($methods, $original1::$original2, $struct, $name, $($arg) *);
-        )*
-    };
-    ($methods:ident, $original1:ident::$original2:ident::$original3:ident, $struct:ident, [$($name:ident $($arg:ident) *),*]) => {
-        $(
-            lua_wrap_constructor_fn!($methods, $original1::$original2::$original3, $struct, $name, $($arg) *);
-        )*
-    };
-    ($methods:ident, $original1:ident::$original2:ident::$original3:ident::$original4:ident, $struct:ident, [$($name:ident $($arg:ident) *),*]) => {
-        $(
-            lua_wrap_constructor_fn!($methods, $original1::$original2::$original3::$original4, $struct, $name, $($arg) *);
         )*
     };
 }
