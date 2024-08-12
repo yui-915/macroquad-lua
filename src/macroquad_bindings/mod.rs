@@ -15,10 +15,11 @@ pub fn module(lua: &Lua) -> LuaResult<LuaTable> {
     let color = modules::color::get_table(lua)?;
     let shapes = modules::shapes::get_table(lua)?;
     let input = modules::input::get_table(lua)?;
+    let window = modules::window::get_table(lua)?;
 
     let prelude = lua_table! {
         using lua;
-        extends shapes, input, color.get::<_, LuaTable>("colors")?;
+        extends shapes, input, window, color.get::<_, LuaTable>("colors")?;
 
         fields {
             Color: color.get::<_, Color>("Color")?

@@ -6,3 +6,6 @@ pub use shapes::*;
 
 mod input;
 pub use input::*;
+
+mod window;
+pub use window::*;
