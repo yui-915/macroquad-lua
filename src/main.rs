@@ -1,7 +1,7 @@
 mod lua;
+
+use lua::LuaWrapper;
 mod macroquad_bindings;
-mod utils;
-use crate::utils::MoreLua;
 use macroquad::prelude::*;
 use mlua::prelude::*;
 
@@ -18,16 +18,29 @@ macro_rules! call_lua_fn {
 
 #[macroquad::main("test")]
 async fn main() -> LuaResult<()> {
-    let mut lua = lua::Lua::new()?;
-    lua.lua
-        .load_module("macroquad", macroquad_bindings::module)?;
     #[cfg(debug_assertions)]
-    lua.load_files();
-    lua.load_modules()?;
-    call_lua_fn!(lua.lua, main.start);
-    loop {
-        lua.poll();
-        call_lua_fn!(lua.lua, main.update);
-        next_frame().await;
+    {
+        let mut lua = LuaWrapper::new()?;
+        lua.load_module("macroquad", macroquad_bindings::module)?;
+        lua.load_files();
+        lua.load_modules()?;
+        call_lua_fn!(lua.lua, main.start);
+        loop {
+            lua.poll();
+            call_lua_fn!(lua.lua, main.update);
+            next_frame().await;
+        }
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+        let lua = LuaWrapper::new()?;
+        lua.load_module("macroquad", macroquad_bindings::module)?;
+        lua.load_modules()?;
+        call_lua_fn!(lua.lua, main.start);
+        loop {
+            call_lua_fn!(lua.lua, main.update);
+            next_frame().await;
+        }
     }
 }
