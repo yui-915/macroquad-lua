@@ -1,0 +1,14 @@
+[ ] some sort of config file/function
+[ ] globally load prelude
+[ ] use global functions instead of a table returned by main
+[ ] improve hot reloading api
+[ ] make hot reloading only reload changed modules
+[ ] complete API bindings
+[ ] better errors/error handling
+[ ] custom panic handler
+[ ] consider using luau ?
+[ ] web support
+[ ] reduce binary size
+[ ] allow developing multiple lua games in the same rust project
+[ ] assests support with hot-reloading and embeding
+[ ] async ...
