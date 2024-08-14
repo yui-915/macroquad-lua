@@ -35,7 +35,9 @@ function game.update()
 	-- 	Y = Y + 5
 	-- end
 
-	print(mq.get_last_key_pressed())
+	-- print(mq.get_last_key_pressed())
+
+	mq.draw_text("Hello World", 100, 100, 50, mq.RED)
 
 	mq.draw_rectangle_lines(X, Y, 100, 100, 15, get_random_element(colors))
 end

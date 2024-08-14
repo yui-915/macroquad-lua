@@ -52,4 +52,9 @@ wrap_structs_for_lua! {
         }
         UserData {}
     }
+
+    pub wrap mq::text::TextDimensions as TextDimensions {
+        fields { width: f32, height: f32, offset_y: f32 }
+        UserData {}
+    }
 }

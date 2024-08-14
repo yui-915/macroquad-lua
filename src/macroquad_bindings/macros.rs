@@ -223,13 +223,33 @@ macro_rules! wrap_generics_for_lua {
 macro_rules! wrap_functions_for_lua {
     {$(
         $(#[$($attr:meta),*])?
-        $visibility:vis wrap $original:path as $new:ident ($($arg_name:ident: $arg_type:ty),*) -> $return:ty
+        $visibility:vis wrap $original:path as $new:ident ($($arg_name:ident: $arg_type:ty $(:$converter:ident)?),*) -> $return:ty
     )*} => {$(
         $(#[$($attr),*])?
         $visibility fn $new ($($arg_name: $arg_type),*) -> $return {
-            $original ( $($arg_name.into()),* ).into()
+            $original ( $(
+                if_else! {
+                    if $($converter)? {
+                        $($arg_name.$converter())?
+                    } else {
+                        $arg_name.into()
+                    }
+                }
+            ),* ).into()
         }
     )*};
+}
+
+#[macro_export]
+macro_rules! if_else {
+    {
+        if $if_block:block else $else_block:block
+    } => { $else_block };
+    {
+        if $thing:tt $if_block:block else $else_block:block
+    } => {
+        $if_block
+    };
 }
 
 #[macro_export]
