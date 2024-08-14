@@ -194,6 +194,9 @@ macro_rules! wrap_generics_for_lua {
             $(
                 fn into_lua($into_lua_self:ident, $into_lua_lua:ident: &Lua) -> LuaResult<LuaValue> $into_lua_body:tt
             )?
+            $(
+                fn from_lua($from_lua_lua_value:ident: LuaValue, $from_lua_lua:ident: &Lua) -> LuaResult<Self> $from_lua_body:tt
+            )?
         }
     )*} => {$(
         $visibility struct $new<$T, $D>($original, std::marker::PhantomData<$T>);
@@ -214,6 +217,12 @@ macro_rules! wrap_generics_for_lua {
         $(
             impl<'lua, $T: From<$D> + mlua::IntoLua<'lua>, $D> mlua::IntoLua<'lua> for $new<$T, $D> {
                 fn into_lua($into_lua_self, $into_lua_lua: &'lua mlua::Lua) -> mlua::Result<mlua::Value> $into_lua_body
+            }
+        )?
+
+        $(
+            impl<'lua, $T: mlua::FromLua<'lua>, $D: From<$T>> mlua::FromLua<'lua> for $new<$T, $D> {
+                fn from_lua($from_lua_lua_value: mlua::Value<'lua>, $from_lua_lua: &'lua mlua::Lua) -> mlua::Result<Self> $from_lua_body
             }
         )?
     )*}

@@ -5,7 +5,8 @@ pub fn get_table(lua: &Lua) -> LuaResult<LuaTable> {
         using lua;
 
         functions {
-            draw_text (text x y font_size color)
+            draw_text (text x y font_size color),
+            draw_multiline_text (text x y font_size line_distance_factor color)
         }
     })
 }
