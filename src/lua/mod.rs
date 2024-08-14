@@ -16,6 +16,10 @@ pub struct LuaWrapper {
     loaded_files: HashMap<String, String>,
 }
 
+fn format_lua_filename(name: &str) -> String {
+    format!("={}.lua", name.split('.').collect::<Vec<_>>().join("_"))
+}
+
 impl LuaWrapper {
     pub fn load_modules(&self) -> mlua::Result<()> {
         for (name, content) in &self.loaded_files {
@@ -23,7 +27,13 @@ impl LuaWrapper {
                 .globals()
                 .get::<_, LuaTable>("package")?
                 .get::<_, LuaTable>("preload")?
-                .set(name.as_str(), self.lua.load(content).into_function()?)?;
+                .set(
+                    name.as_str(),
+                    self.lua
+                        .load(content)
+                        .set_name(format_lua_filename(name))
+                        .into_function()?,
+                )?;
         }
         let main: LuaTable = self
             .lua

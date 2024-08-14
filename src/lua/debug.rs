@@ -66,13 +66,16 @@ impl LuaWrapper {
         self.load_files();
     }
 
-    pub fn poll(&mut self) {
+    pub fn poll(&mut self) -> bool {
         self.watcher.poll().unwrap();
         if let Ok(_event) = self.rx.try_recv() {
             println!("Reloading modules...");
             self.unload_modules().unwrap();
             self.reload_files();
             self.load_modules().unwrap();
+            true
+        } else {
+            false
         }
     }
 }
