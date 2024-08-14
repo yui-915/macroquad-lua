@@ -13,6 +13,7 @@ use mlua::prelude::*;
 
 pub fn module(lua: &Lua) -> LuaResult<LuaTable> {
     let color = modules::color::get_table(lua)?;
+    let extra = modules::extra::get_table(lua)?;
     let input = modules::input::get_table(lua)?;
     let shapes = modules::shapes::get_table(lua)?;
     let text = modules::text::get_table(lua)?;
@@ -31,9 +32,13 @@ pub fn module(lua: &Lua) -> LuaResult<LuaTable> {
         using lua;
 
         fields {
-            shapes: shapes,
             color: color,
-            prelude: prelude
+            extra: extra,
+            input: input,
+            prelude: prelude,
+            shapes: shapes,
+            text: text,
+            window: window
         }
     })
 }

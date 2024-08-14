@@ -1,5 +1,5 @@
 [ ] some sort of config file/function
-[ ] globally load prelude
+[x] globally load prelude
 [ ] use global functions instead of a table returned by main
 [ ] improve hot reloading api
 [ ] make hot reloading only reload changed modules
@@ -12,3 +12,4 @@
 [ ] allow developing multiple lua games in the same rust project
 [ ] assests support with hot-reloading and embeding
 [ ] async ...
+[ ] more/better examples
