@@ -1,0 +1,115 @@
+[ ] macroquad
+ | [ ] audio
+ |  | ...
+ | [ ] camera
+ |  | ...
+ | [x] color
+ |  | [x] colors
+ |  | [x] colors::*
+ |  | [x] Color
+ |  |  |  [x] new
+ |  |  |  [x] from_rgba
+ |  |  |  [x] from_hex
+ |  |  |  [x] default
+ |  |  |  [x] to_vec
+ |  |  |  [x] from_vec
+ |  |  |  [x] clone
+ |  |  |  [x] clone_from
+ |  |  |  [x] eq
+ |  |  |  [x] ne
+ |  | [x] hls_to_rbg
+ |  | [x] rgb_to_hls
+ | [ ] conf
+ |  | ...
+ | [ ] expreimental
+ |  | ...
+ | [ ] file
+ |  | ...
+ | [ ] input
+ |  | [!] utils
+ |  | [ ] Touch
+ |  | [x] KeyCode
+ |  | [x] MouseButton
+ |  | [ ] TouchPhase
+ |  | [x] clear_input_queue
+ |  | [x] get_char_pressed
+ |  | [x] get_keys_down
+ |  | [x] get_keys_pressed
+ |  | [x] get_keys_released
+ |  | [x] get_last_key_pressed
+ |  | [x] is_key_down
+ |  | [x] is_key_pressed
+ |  | [x] is_key_released
+ |  | [x] is_mouse_button_down
+ |  | [x] is_mouse_button_pressed
+ |  | [x] is_mouse_button_released
+ |  | [x] is_quit_requested
+ |  | [x] is_simulating_mouse_with_touch
+ |  | [x] mouse_delta_position
+ |  | [x] mouse_position
+ |  | [x] mouse_position_local
+ |  | [x] mouse_wheel
+ |  | [x] prevent_quit
+ |  | [x] set_cursor_grab
+ |  | [x] show_mouse
+ |  | [x] simulate_mouse_with_touch
+ |  | [ ] touches
+ |  | [ ] touches_local
+ | [ ] logging
+ |  | ...
+ | [ ] material
+ |  | ...
+ | [ ] math
+ |  | ...
+ | [ ] models
+ |  | ...
+ | [ ] prelude
+ |  | ...
+ | [ ] rand
+ |  | ...
+ | [ ] shapes
+ |  | [ ] DrawRectangleParams
+ |  |  |  [x] default
+ |  |  |  [ ] clone
+ |  |  |  [ ] clone_from
+ |  | [x] draw_arc
+ |  | [x] draw_circle
+ |  | [x] draw_circle_lines
+ |  | [x] draw_ellipse
+ |  | [x] draw_ellipse_lines
+ |  | [x] draw_hexagon
+ |  | [x] draw_line
+ |  | [x] draw_poly
+ |  | [x] draw_poly_lines
+ |  | [x] draw_rectangle
+ |  | [x] draw_rectangle_ex
+ |  | [x] draw_rectangle_lines
+ |  | [x] draw_rectangle_lines_ex
+ |  | [x] draw_triangle
+ |  | [x] draw_triangle_lines
+ | [ ] telemetry
+ |  | ...
+ | [ ] text
+ |  | ...
+ | [ ] texture
+ |  | ...
+ | [ ] time
+ |  |  [ ] get_fps
+ |  |  [ ] get_frame_time
+ |  |  [ ] get_time
+ | [ ] ui
+ |  | ...
+ | [ ] window
+ |  |  [!] miniquad
+ |  |  [ ] Conf
+ |  |  [!] InternalGlContext
+ |  |  [x] clear_background
+ |  |  [!] get_internal_gl
+ |  |  [?] next_frame
+ |  |  [ ] request_new_screen_size
+ |  |  [ ] screen_dpi_scale
+ |  |  [x] screen_height
+ |  |  [x] screen_width
+ |  |  [x] set_fullscreen
+ |  |  [?] set_panic_handler
+ | ...
