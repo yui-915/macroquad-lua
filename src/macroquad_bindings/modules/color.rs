@@ -17,6 +17,11 @@ pub fn get_table(lua: &Lua) -> LuaResult<LuaTable> {
         using lua;
         extends colors;
 
+        functions {
+            hsl_to_rgb (h s l),
+            rgb_to_hsl (color)
+        }
+
         fields {
             Color: Color::default(),
             colors: colors

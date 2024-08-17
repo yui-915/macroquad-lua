@@ -9,5 +9,9 @@ pub use input::*;
 
 mod window;
 pub use window::*;
+
 mod text;
 pub use text::*;
+
+mod color;
+pub use color::*;

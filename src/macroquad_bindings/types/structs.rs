@@ -2,7 +2,7 @@ use macroquad as mq;
 use macroquad::color as ColorConstants;
 
 wrap_structs_for_lua! {
-    #[derive(Default)]
+    #[derive(Default, Clone, PartialEq)]
     pub wrap mq::color::Color as Color {
         fields { r: f32, g: f32, b: f32, a: f32 }
         impl {
@@ -11,11 +11,16 @@ wrap_structs_for_lua! {
             }
         }
         UserData {
+            auto_impl { clone, clone_from, eq, }
             constructors {
-                new (r g b a),
-                from_rgba (r g b a),
-                from_hex (hex),
-                default ()
+                new (r: f32, g: f32, b: f32, a: f32),
+                from_rgba (r: u8, g: u8, b: u8, a: u8),
+                from_hex (hex: u32),
+                default (),
+                from_vec (vec4: Vec4)
+            }
+            converters {
+                to_vec Vec4
             }
         }
         pub constants from ColorConstants {
@@ -37,7 +42,22 @@ wrap_structs_for_lua! {
         }
         UserData {
             constructors {
-                new (x y)
+                new (x: f32, y: f32)
+            }
+        }
+    }
+
+    #[derive(Default)]
+    pub wrap mq::math::Vec4 as Vec4 {
+        fields { x: f32, y: f32, z: f32, w: f32 }
+        impl {
+            pub const fn new(vec: mq::math::Vec4) -> Self {
+                Self(vec)
+            }
+        }
+        UserData {
+            constructors {
+                new (x: f32, y: f32, z: f32, w: f32)
             }
         }
     }
@@ -50,7 +70,11 @@ wrap_structs_for_lua! {
                 Self(params)
             }
         }
-        UserData {}
+        UserData {
+            constructors {
+                default ()
+            }
+        }
     }
 
     pub wrap mq::text::TextDimensions as TextDimensions {

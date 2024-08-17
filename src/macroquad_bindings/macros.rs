@@ -81,8 +81,20 @@ macro_rules! wrap_structs_for_lua {
 
             UserData {
                 $(
+                    auto_impl {
+                        $(clone $auto_impl_clone:vis,)?
+                        $(clone_from $auto_impl_clone_from:vis,)?
+                        $(eq $auto_impl_eq:vis,)?
+                    }
+                )?
+                $(
                     constructors {
-                        $($constructor_name:ident($($constructor_arg:ident) *)),*
+                        $($constructor_name:ident($($constructor_arg:ident: $constructor_arg_type:ty),*)),*
+                    }
+                )?
+                $(
+                    converters {
+                        $($converter_name:ident $converter_type:ty),*
                     }
                 )?
                 $(
@@ -168,11 +180,44 @@ macro_rules! wrap_structs_for_lua {
                     #[allow(unused_parens)]
                     __methods__.add_function(
                         stringify!($constructor_name),
-                        |_, ($($constructor_arg),*)| Ok(
-                            Self( Original::$constructor_name ($($constructor_arg),*))
+                        |_, ($($constructor_arg),*): ($($constructor_arg_type),*)| Ok(
+                            Self( Original::$constructor_name ($($constructor_arg.into()),*))
                         )
                     );
                 })*)?
+                $($({
+                    use $converter_type as ConverterType;
+                    #[allow(unused_parens)]
+                    __methods__.add_method(
+                        stringify!($converter_name),
+                        |_, this, ()| Ok(ConverterType(this.0.$converter_name()))
+                    );
+                })*)?
+                $(
+                    $({
+                        $auto_impl_clone use $new as $new;
+                        __methods__.add_method("clone", |_, this: &$new, ()| Ok(this.clone()));
+                    })?
+                    $({
+                        $auto_impl_clone_from use $new as $new;
+                        __methods__.add_method_mut(
+                            "clone_from",
+                            |_, this, other: $new| Ok(this.clone_from(&other)));
+                    })?
+                    $({
+                        $auto_impl_clone_from use $new as $new;
+                        __methods__.add_method(
+                            "eq",
+                            |_, this, other: $new| Ok(*this == other));
+                        __methods__.add_method(
+                            "ne",
+                            |_, this, other: $new| Ok(*this != other));
+                        __methods__.add_meta_function(
+                            mlua::MetaMethod::Eq,
+                            |_, (first, second): ($new, $new)| Ok(first == second)
+                        )
+                    })?
+                )?
                 $(
                     let $methods = __methods__;
                     $methods_body
