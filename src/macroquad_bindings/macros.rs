@@ -197,25 +197,25 @@ macro_rules! wrap_structs_for_lua {
                 $(
                     $({
                         $auto_impl_clone use $new as $new;
-                        __methods__.add_method("clone", |_, this: &$new, ()| Ok(this.clone()));
+                        __methods__.add_method("clone", |_, this, ()| Ok($new(this.0.clone())));
                     })?
                     $({
                         $auto_impl_clone_from use $new as $new;
                         __methods__.add_method_mut(
                             "clone_from",
-                            |_, this, other: $new| Ok(this.clone_from(&other)));
+                            |_, this, other: $new| Ok(this.0.clone_from(&other.0)));
                     })?
                     $({
                         $auto_impl_eq use $new as $new;
                         __methods__.add_method(
                             "eq",
-                            |_, this, other: $new| Ok(*this == other));
+                            |_, this, other: $new| Ok(this.0 == other.0));
                         __methods__.add_method(
                             "ne",
-                            |_, this, other: $new| Ok(*this != other));
+                            |_, this, other: $new| Ok(this.0 != other.0));
                         __methods__.add_meta_function(
                             mlua::MetaMethod::Eq,
-                            |_, (first, second): ($new, $new)| Ok(first == second)
+                            |_, (first, second): ($new, $new)| Ok(first.0 == second.0)
                         )
                     })?
                     $({

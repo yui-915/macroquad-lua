@@ -23,7 +23,7 @@ pub fn get_table(lua: &Lua) -> LuaResult<LuaTable> {
         }
 
         fields {
-            Color: Color::default(),
+            Color: Color::new(Default::default()),
             colors: colors
         }
     })

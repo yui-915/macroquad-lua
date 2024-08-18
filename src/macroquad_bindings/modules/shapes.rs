@@ -23,7 +23,7 @@ pub fn get_table(lua: &Lua) -> LuaResult<LuaTable> {
         }
 
         fields {
-            DrawRectangleParams: DrawRectangleParams::default()
+            DrawRectangleParams: DrawRectangleParams::new(Default::default())
         }
     })
 }

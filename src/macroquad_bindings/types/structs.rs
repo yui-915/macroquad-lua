@@ -2,7 +2,6 @@ use macroquad as mq;
 use macroquad::color as ColorConstants;
 
 wrap_structs_for_lua! {
-    #[derive(Default, Clone, PartialEq)]
     pub wrap mq::color::Color as Color {
         fields { r: f32, g: f32, b: f32, a: f32 }
         impl {
@@ -32,7 +31,6 @@ wrap_structs_for_lua! {
         }
     }
 
-    #[derive(Default)]
     pub wrap mq::math::Vec2 as Vec2 {
         fields { x: f32, y: f32 }
         impl {
@@ -47,7 +45,6 @@ wrap_structs_for_lua! {
         }
     }
 
-    #[derive(Default)]
     pub wrap mq::math::Vec4 as Vec4 {
         fields { x: f32, y: f32, z: f32, w: f32 }
         impl {
@@ -62,7 +59,6 @@ wrap_structs_for_lua! {
         }
     }
 
-    #[derive(Default, Clone)]
     pub wrap mq::shapes::DrawRectangleParams as DrawRectangleParams {
         fields { offset: Vec2, rotation: f32, color: Color }
         impl {
@@ -78,7 +74,6 @@ wrap_structs_for_lua! {
         }
     }
 
-    #[derive(Default, Clone)]
     pub wrap mq::text::TextDimensions as TextDimensions {
         fields { width: f32, height: f32, offset_y: f32 }
         UserData {
