@@ -82,14 +82,17 @@ async fn main() -> LuaResult<()> {
         lua.load_module("macroquad", macroquad_bindings::module)?;
         load!(lua main)?;
 
-        if get_fn!(lua macroquad.update).is_none() && get_fn!(lua macroquad.draw).is_none() {
-            return Err(LuaError::external("no update or draw function found"));
-        }
-
         let mut last_err: Option<LuaError> = get_err!(call_fn!(lua macroquad.init(()) -> ()));
         if last_err.is_none() {
             update_err!(last_err lua macroquad.load(()) -> ())
         };
+
+        if get_fn!(lua macroquad.update).is_none() && get_fn!(lua macroquad.draw).is_none() {
+            if let Some(err) = last_err {
+                eprintln!("{err:#?}");
+            }
+            return Err(LuaError::external("no update or draw function found"));
+        }
 
         loop {
             // MAIN LOOP
