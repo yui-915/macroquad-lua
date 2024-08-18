@@ -48,6 +48,9 @@ impl LuaWrapper {
                 .map(|p| p.to_str().unwrap())
                 .collect::<Vec<&str>>()
                 .join(".");
+            if !name.ends_with(".lua") {
+                continue;
+            }
             name.pop();
             name.pop();
             name.pop();
@@ -69,6 +72,7 @@ impl LuaWrapper {
     pub fn poll(&mut self) -> bool {
         self.watcher.poll().unwrap();
         if let Ok(_event) = self.rx.try_recv() {
+            while let Ok(_event) = self.rx.try_recv() {}
             println!("Reloading modules...");
             self.unload_modules().unwrap();
             self.reload_files();

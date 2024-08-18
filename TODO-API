@@ -4,21 +4,6 @@
  | [ ] camera
  |  | ...
  | [x] color
- |  | [x] colors
- |  | [x] colors::*
- |  | [x] Color
- |  |  |  [x] new
- |  |  |  [x] from_rgba
- |  |  |  [x] from_hex
- |  |  |  [x] default
- |  |  |  [x] to_vec
- |  |  |  [x] from_vec
- |  |  |  [x] clone
- |  |  |  [x] clone_from
- |  |  |  [x] eq
- |  |  |  [x] ne
- |  | [x] hls_to_rbg
- |  | [x] rgb_to_hls
  | [ ] conf
  |  | ...
  | [ ] expreimental

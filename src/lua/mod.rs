@@ -35,18 +35,6 @@ impl LuaWrapper {
                         .into_function()?,
                 )?;
         }
-        let main: LuaTable = self
-            .lua
-            .globals()
-            .get::<_, LuaTable>("package")?
-            .get::<_, LuaTable>("preload")?
-            .get::<_, LuaFunction>("main")?
-            .call(())?;
-        self.lua
-            .globals()
-            .get::<_, LuaTable>("package")?
-            .get::<_, LuaTable>("loaded")?
-            .set("main", main)?;
         Ok(())
     }
 
@@ -54,11 +42,13 @@ impl LuaWrapper {
         self.lua
             .globals()
             .get::<_, LuaTable>("package")?
-            .set("preload", self.lua.create_table()?)?;
+            .get::<_, LuaTable>("preload")?
+            .clear()?;
         self.lua
             .globals()
             .get::<_, LuaTable>("package")?
-            .set("loaded", self.lua.create_table()?)?;
+            .get::<_, LuaTable>("loaded")?
+            .clear()?;
         Ok(())
     }
 

@@ -1,10 +1,10 @@
 [ ] some sort of config file/function
 [x] globally load prelude
-[ ] use global functions instead of a table returned by main
-[ ] improve hot reloading api
+[?] use global functions instead of a table returned by main
+[x] improve hot reloading api
 [ ] make hot reloading only reload changed modules
 [ ] complete API bindings
-[x] better errors/error handling
+[?] better errors/error handling
 [x] custom panic handler
 [ ] consider using luau ?
 [ ] web support
@@ -13,3 +13,5 @@
 [ ] assests support with hot-reloading and embeding
 [ ] async ...
 [ ] more/better examples
+[ ] better documentation
+[ ] readme file
