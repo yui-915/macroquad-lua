@@ -205,7 +205,7 @@ macro_rules! wrap_structs_for_lua {
                             |_, this, other: $new| Ok(this.clone_from(&other)));
                     })?
                     $({
-                        $auto_impl_clone_from use $new as $new;
+                        $auto_impl_eq use $new as $new;
                         __methods__.add_method(
                             "eq",
                             |_, this, other: $new| Ok(*this == other));

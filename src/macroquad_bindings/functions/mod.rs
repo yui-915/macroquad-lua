@@ -15,3 +15,12 @@ pub use text::*;
 
 mod color;
 pub use color::*;
+
+mod time;
+pub use time::*;
+
+mod camera;
+pub use camera::*;
+
+mod rand;
+pub use rand::*;

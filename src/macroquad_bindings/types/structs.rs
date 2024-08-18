@@ -62,7 +62,7 @@ wrap_structs_for_lua! {
         }
     }
 
-    #[derive(Default)]
+    #[derive(Default, Clone)]
     pub wrap mq::shapes::DrawRectangleParams as DrawRectangleParams {
         fields { offset: Vec2, rotation: f32, color: Color }
         impl {
@@ -71,14 +71,21 @@ wrap_structs_for_lua! {
             }
         }
         UserData {
+            auto_impl { clone, clone_from, }
             constructors {
                 default ()
             }
         }
     }
 
+    #[derive(Default, Clone)]
     pub wrap mq::text::TextDimensions as TextDimensions {
         fields { width: f32, height: f32, offset_y: f32 }
-        UserData {}
+        UserData {
+            auto_impl { clone, clone_from, }
+            constructors {
+                default ()
+            }
+        }
     }
 }

@@ -10,4 +10,7 @@ wrap_functions_for_lua! {
             x: f32, y: f32, font_size: f32,
             line_distance_factor: Option<f32, f32>, color: Color
         ) -> ()
+
+    pub wrap mq::text::camera_font_scale as camera_font_scale
+        (world_font_size: f32) -> (u16, f32, f32)
 }
