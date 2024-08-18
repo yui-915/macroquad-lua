@@ -11,7 +11,7 @@ wrap_structs_for_lua! {
             }
         }
         UserData {
-            auto_impl { clone, clone_from, eq, }
+            auto_impl { clone, clone_from, eq, __tostring, }
             constructors {
                 new (r: f32, g: f32, b: f32, a: f32),
                 from_rgba (r: u8, g: u8, b: u8, a: u8),
@@ -71,7 +71,7 @@ wrap_structs_for_lua! {
             }
         }
         UserData {
-            auto_impl { clone, clone_from, }
+            auto_impl { clone, clone_from, __tostring, }
             constructors {
                 default ()
             }
@@ -82,7 +82,7 @@ wrap_structs_for_lua! {
     pub wrap mq::text::TextDimensions as TextDimensions {
         fields { width: f32, height: f32, offset_y: f32 }
         UserData {
-            auto_impl { clone, clone_from, }
+            auto_impl { clone, clone_from, __tostring, }
             constructors {
                 default ()
             }

@@ -85,6 +85,7 @@ macro_rules! wrap_structs_for_lua {
                         $(clone $auto_impl_clone:vis,)?
                         $(clone_from $auto_impl_clone_from:vis,)?
                         $(eq $auto_impl_eq:vis,)?
+                        $(__tostring $auto_impl___tostring:vis,)?
                     }
                 )?
                 $(
@@ -217,6 +218,14 @@ macro_rules! wrap_structs_for_lua {
                             |_, (first, second): ($new, $new)| Ok(first == second)
                         )
                     })?
+                    $({
+                        $auto_impl___tostring use $new as $new;
+                        __methods__.add_meta_method(
+                            mlua::MetaMethod::ToString,
+                            |_, this: &$new, ()| Ok(format!("{:?}", this.0))
+                        )
+                    })?
+
                 )?
                 $(
                     let $methods = __methods__;
