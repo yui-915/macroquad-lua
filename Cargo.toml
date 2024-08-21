@@ -13,9 +13,17 @@ path = "deps/macroquad-lua-macros"
 version = "0.4.12"
 default-features = false
 
-[dependencies.mlua]
+[dev-dependencies.mlua]
+version = "0.9.9"
+features = ["lua51", "vendored", "macros", "async"]
+
+[target."cfg(any(target_os = \"windows\", target_os = \"linux\"))".dependencies.mlua]
 version = "0.9.9"
 features = ["luajit", "vendored", "macros", "async"]
+
+[target."cfg(not(any(target_os = \"windows\", target_os = \"linux\")))".dependencies.mlua]
+version = "0.9.9"
+features = ["lua51", "vendored", "macros", "async"]
 
 [profile.dev]
 opt-level = 1
@@ -29,8 +37,15 @@ codegen-units = 1
 # strip = "debuginfo"
 strip = "symbols"
 
-[dev-dependencies]
-notify = "6.1.1"
-# panic = "abort"
-# opt-level = "s"
-# opt-level = "z"
+[package.metadata.android]
+android_version = 29
+target_sdk_version = 29
+build_targets = [
+  "armv7-linux-androideabi",
+  "aarch64-linux-android",
+  "i686-linux-android",
+  "x86_64-linux-android",
+]
+
+[package.metadata.android.activity_attributes]
+"android:exported" = "true"

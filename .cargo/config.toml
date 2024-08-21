@@ -1,0 +1,10 @@
+
+[patch.crates-io.miniquad]
+git = "https://github.com/yui-915/miniquad.git"
+branch = "emscripten"
+
+[target."wasm32-unknown-emscripten"]
+rustflags = [
+  "-C",
+  "link-args=-sEXPORTED_FUNCTIONS=_crate_version,_allocate_vec_u8,_on_clipboard_paste,_frame,_mouse_move,_raw_mouse_move,_mouse_down,_mouse_up,_mouse_wheel,_key_down,_key_press,_key_up,_resize,_touch,_focus,_on_files_dropped_start,_on_files_dropped_finish,_on_file_dropped,_main,_malloc,_free -sALLOW_MEMORY_GROWTH=1 --extern-pre-js web/js/mq-glue.js",
+]
