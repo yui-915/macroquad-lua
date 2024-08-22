@@ -6,7 +6,7 @@ impl LuaWrapper {
     pub fn new() -> LuaResult<Self> {
         Ok(Self {
             lua: mlua::Lua::new(),
-            loaded_files: embed_lua_files!("game/src"),
+            loaded_files: embed_lua_files!(),
         })
     }
 }

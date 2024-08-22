@@ -18,33 +18,30 @@ fn list_all_paths(path: &Path) -> Vec<PathBuf> {
     paths
 }
 
-const LUA_SRC_PATH: &str = "game/src";
-
 impl LuaWrapper {
     pub fn new() -> LuaResult<Self> {
         let (tx, rx) = std::sync::mpsc::channel();
+        let path = std::env::var("MACROQUAD_LUA_GAME_SRC_PATH").unwrap_or("game/src".to_string());
+        let path = PathBuf::from(path);
         let mut watcher = notify::poll::PollWatcher::new(tx, notify::Config::default()).unwrap();
         watcher
-            .watch(
-                &PathBuf::from(LUA_SRC_PATH),
-                notify::RecursiveMode::Recursive,
-            )
+            .watch(&path, notify::RecursiveMode::Recursive)
             .unwrap();
         Ok(Self {
             rx,
             watcher,
+            path,
             lua: mlua::Lua::new(),
             loaded_files: HashMap::new(),
         })
     }
 
     pub fn load_files(&mut self) {
-        let base_path = PathBuf::from(LUA_SRC_PATH);
-        for path in &list_all_paths(&base_path) {
+        for path in &list_all_paths(&self.path) {
             let mut name = path
                 .iter()
-                .skip(base_path.iter().count())
-                .take(path.iter().count() - base_path.iter().count())
+                .skip(self.path.iter().count())
+                .take(path.iter().count() - self.path.iter().count())
                 .map(|p| p.to_str().unwrap())
                 .collect::<Vec<&str>>()
                 .join(".");

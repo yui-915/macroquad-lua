@@ -1,4 +1,4 @@
 /target
 Cargo.lock
-deps/*/Cargo.lock
-deps/*/target
+crates/*/target
+crates/*/target

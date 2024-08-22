@@ -7,7 +7,7 @@ edition = "2021"
 version = "6.1.1"
 
 [dependencies.macroquad-lua-macros]
-path = "deps/macroquad-lua-macros"
+path = "crates/macroquad-lua-macros"
 
 [dependencies.macroquad]
 version = "0.4.12"
