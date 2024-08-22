@@ -7,11 +7,19 @@
 [?] better errors/error handling
 [x] custom panic handler
 [ ] consider using luau ?
-[ ] web support
+[x] web support
 [ ] reduce binary size
-[ ] allow developing multiple lua games in the same rust project
 [ ] assests support with hot-reloading and embeding
 [ ] async ...
 [ ] more/better examples
-[ ] better documentation
-[ ] readme file
+[ ] documentation
+[x] readme file
+[ ] implement the math api (most importantly vectors)
+[ ] implement some sort of table "class" to make dealing with tables easier
+[ ] implement a fallback panic handler incase the user provided panic handler is not loaded yet/fails/not present
+[ ] lua_ls and selene config files to stop them from sreaming at me 24/7
+[ ] some sort of globally installable cli to make it easier to develop multiple projects
+[ ] make mq/macroquad alongside it's prelude automatically loaded globally 
+[ ] delay init function triggering by a few frames to give the wm enough time to resize the window after it's creation
+[ ] shaders ?!
+[ ] other macroquad extentions like audio and networking, maybe even egui
