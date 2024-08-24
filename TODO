@@ -23,3 +23,6 @@
 [ ] delay init function triggering by a few frames to give the wm enough time to resize the window after it's creation
 [ ] shaders ?!
 [ ] other macroquad extentions like audio and networking, maybe even egui
+[ ] sync cli release with the main macroquad-lua project (release it on crates.io?)
+[ ] better template for new projects
+[ ] do something about the performance issues
