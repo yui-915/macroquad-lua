@@ -1,16 +1,25 @@
 [package]
 name = "macroquad-lua-cli"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 description = "A simple cli for macroquad-lua"
 license = "MIT OR Apache-2.0"
 homepage = "https://github.com/yui-915/macroquad-lua"
 repository = "https://github.com/yui-915/macroquad-lua"
 
-[dependencies]
-clap = { version = "4.5.16", features = ["derive"] }
-git2 = "0.19.0"
-platform-dirs = "0.3.0"
+[dependencies.clap]
+version = "4.5.16"
+features = ["derive", "std"]
+# default-features = false
+
+[dependencies.git2]
+version = "0.19.0"
+default-features = false
+
+[dependencies.platform-dirs]
+version = "0.3.0"
+default-features = false
+
 
 [[bin]]
 name = "mql"
