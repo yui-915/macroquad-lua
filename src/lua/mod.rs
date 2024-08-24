@@ -1,20 +1,20 @@
 use mlua::prelude::*;
 use std::collections::HashMap;
 
-#[cfg(debug_assertions)]
+#[cfg(feature = "dev")]
 use std::path::PathBuf;
 
-#[cfg(debug_assertions)]
+#[cfg(feature = "dev")]
 mod debug;
-#[cfg(not(debug_assertions))]
+#[cfg(feature = "release")]
 mod release;
 
 pub struct LuaWrapper {
-    #[cfg(debug_assertions)]
+    #[cfg(feature = "dev")]
     rx: std::sync::mpsc::Receiver<Result<notify::Event, notify::Error>>,
-    #[cfg(debug_assertions)]
+    #[cfg(feature = "dev")]
     watcher: notify::PollWatcher,
-    #[cfg(debug_assertions)]
+    #[cfg(feature = "dev")]
     path: PathBuf,
 
     pub lua: mlua::Lua,

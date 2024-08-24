@@ -5,47 +5,47 @@ edition = "2021"
 
 [dependencies.notify]
 version = "6.1.1"
-
+optional = true
+default-features = false
 [dependencies.macroquad-lua-macros]
 path = "crates/macroquad-lua-macros"
-
+optional = true
 [dependencies.macroquad]
 version = "0.4.12"
 default-features = false
-
-[dev-dependencies.mlua]
+[dependencies.mlua]
 version = "0.9.9"
-features = ["lua51", "vendored", "macros", "async"]
+features = ["vendored"]
+default-features = false
 
-[target."cfg(any(target_os = \"windows\", target_os = \"linux\"))".dependencies.mlua]
-version = "0.9.9"
-features = ["luajit", "vendored", "macros", "async"]
-
-[target."cfg(not(any(target_os = \"windows\", target_os = \"linux\")))".dependencies.mlua]
-version = "0.9.9"
-features = ["lua51", "vendored", "macros", "async"]
+[features]
+dev = ["dep:notify", "mlua/lua51"]
+release = ["dep:macroquad-lua-macros"]
+release-jit = ["mlua/luajit", "release"]
+release-nojit = ["mlua/lua51", "release"]
+default = ["dev"]
 
 [profile.dev]
 opt-level = 1
-
 [profile.dev.package."*"]
 opt-level = 3
-
 [profile.release]
 lto = true
 codegen-units = 1
-# strip = "debuginfo"
 strip = "symbols"
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
 
 [package.metadata.android]
 android_version = 29
 target_sdk_version = 29
+# min_sdk_version = 24
 build_targets = [
   "armv7-linux-androideabi",
   "aarch64-linux-android",
   "i686-linux-android",
   "x86_64-linux-android",
 ]
-
 [package.metadata.android.activity_attributes]
 "android:exported" = "true"

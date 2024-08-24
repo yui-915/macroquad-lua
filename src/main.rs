@@ -74,7 +74,7 @@ macro_rules! load {
 
 #[macroquad::main("test")]
 async fn main() -> LuaResult<()> {
-    #[cfg(debug_assertions)]
+    #[cfg(feature = "dev")]
     {
         let mut lua = LuaWrapper::new()?;
         lua.load_files();
@@ -134,7 +134,7 @@ async fn main() -> LuaResult<()> {
         }
     }
 
-    #[cfg(not(debug_assertions))]
+    #[cfg(feature = "release")]
     {
         let lua = LuaWrapper::new()?;
         lua.load_modules()?;
