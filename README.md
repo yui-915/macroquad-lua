@@ -1,15 +1,16 @@
-
 # macroquad-lua
 
-love macroquad but hate rust, so use lua instead
-
+Building games with macroquad using lua instead of rust
 
 ## DO NOT USE
-this project is still in devolopment and will probably be forever, thus you should not even think about using it for making anything more than a moving square
+
+this project is not done and will probably never be, thus you should not even think about using it for making anything more than a moving square
+
 ## Example
 
 ```lua
 mq = require("macroquad")
+// equivalent of use macroquad::prelude::*;
 mq.extra.global_use(mq.prelude)
 
 x = 0
@@ -27,63 +28,63 @@ function mq.draw()
 end
 ```
 
-
 ## Features
 
 - hot-reloading in dev mode
-- boundle lua source files in release mode
+- embed lua source files in release mode
 - ...
 
 ## Running
 
-It's as simple as
+The recommended way of using the project is `macroquad-lua-cli`
+
+You'll need cargo with a working rust compiler
 
 ```bash
-git clone https://github.com/yui-915/macroquad-lua
-cd macroquad-lua
-cargo run
+# installing the cli
+cargo install macroquad-lua-cli
+# if you have PATH setup correctly
+# you should be able to just run `mql help`
+
+# installing/updating macroquad-lua using the cli
+mql update
+
+# creating a new project
+mql new project-name
+cd project-name
+
+# running in dev mode
+mql run
+
+# building in release mode
+mql build
+
+# if you have rust cross-compilation working
+# you can do something like
+mql build --target x86_64-pc-windows-gnu
+# (cross compiling from linux host to windows target)
+
+# is you have a working emscripten compiler and add to PATH
+# you can build directly to web
+mql build --target emscripten
 ```
-You can start doing changes in `game/src/main.lua`
 
+\*Tested on linux and windows only
 
+While it's possible to build apk for android (using [cargo-quad-apk](https://github.com/not-fl3/cargo-quad-apk)), it hasn't been implemented to macroquad-lau-cli yet
 
-## Building
-
-For linux and windows (MacOS not tested) it's as simple as
-```bash
-cargo build --release
-```
-then you can find it in `target/release/macroquad-lua`
-\
-\
-For android you can follow [this macroquad atricle](https://macroquad.rs/articles/android/)\
-a few notes if you're going to build without using docker:
-- you might have to change `android_version` and `target_sdk_version` in `Cargo.toml` depending on the `android-sdk` version you have installed
-- if you're getting an `no such file or directory` error without any context, if could be due to [this function](https://github.com/not-fl3/cargo-quad-apk/blob/master/src/ops/build/util.rs#L167) trying to read a folder called `lib64`, check your android-ndk installation (eg. `android-ndk/toolchains/llvm/prebuilt/linux-x86_64/`), if it only contains a `lib` but not `lib64`, you can try using [my fork](https://github.com/yui-915/cargo-quad-apk) instead (`cargo uninstall cargo-quad-apk` and `cargo install --git https://github.com/yui-915/cargo-quad-apk.git`)
--  some java installation (like `java-17-graalvm-ee`) doesn't have `rt.jar` which is required for the build, I'd recommend just sticking to `java-8-openjdk`, also `cargo-quad-apk` priortize the java installation in your `PATH` over `JAVA_HOME`
-
-\
-For web we have to use `wasm32-unknown-emscripten` instead of `wasm32-unknown-unknown` to build lua\
-as long as emscripten correctly setup, and `emcc` and emscripten provided `clang` available in `PATH`, you should be able to just do
-```bash
-cargo build --release --target wasm32-unknown-emscripten
-```
-then use the `js` and `wasm` files from `target/wasm32-unknown-emscripten/release` and `index.js` from the `web` folder
-
-(I should make a docker image for it at some point)
-\
-\
-About ios ..... idk
+idk about MacOS and IOS
 
 ## Roadmap
+
 check the `TODO` and `TODO-API` files
+
 ## Contributing
 
 Why?
 
+## Also see
 
-## Acknowledgements
-
- - [macroquad](https://github.com/not-fl3/macroquad)
- - [mlua](https://github.com/mlua-rs/mlua)
- - [readme.so](https://github.com/octokatherine/readme.so)
+- macroquad ([website](https://macroquad.rs/) - [github](https://github.com/not-fl3/macroquad)): awesome game library
+- mlua ([github](https://github.com/mlua-rs/mlua)): lua bindings for rust
+- readme.so ([website](https://readme.so/editor) - [github](https://github.com/octokatherine/readme.so)): online editor for making readmes
